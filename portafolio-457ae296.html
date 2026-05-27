@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jessica Avila — UX/UI Designer & E-commerce Specialist</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Space+Mono&family=Lato:wght@300;700;900&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root {
+  --cream:#F7F3EE; --ink:#18160F; --rust:#B84A1E; --rust-light:#F0E4DC;
+  --sage:#4A6741; --warm-gray:#8C8478; --border:#E3DDD5; --white:#FDFBF8;
+}
+
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{background:var(--cream);color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;font-size:16px}
+img{display:block;max-width:100%}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(247,243,238,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;padding:1rem 1.25rem}
+.nav-logo{font-family:'Space Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+.nav-links-desktop{display:none;gap:2rem;list-style:none;align-items:center}
+.nav-links-desktop a{font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:var(--warm-gray);transition:color .25s}
+.nav-links-desktop a:hover{color:var(--rust)}
+.nav-cta-d{padding:.5rem 1.2rem;background:var(--ink);color:var(--cream)!important;transition:background .25s!important}
+.nav-cta-d:hover{background:var(--rust)!important}
+.nav-menu-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px}
+.nav-menu-btn span{display:block;width:22px;height:1.5px;background:var(--ink);transition:all .3s}
+.nav-menu-btn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-menu-btn.open span:nth-child(2){opacity:0}
+.nav-menu-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.nav-drawer{position:fixed;inset:0;background:var(--ink);z-index:150;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2.5rem;opacity:0;pointer-events:none;transition:opacity .35s}
+.nav-drawer.open{opacity:1;pointer-events:all}
+.nav-drawer a{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--cream);text-decoration:none;font-style:italic;transition:color .2s}
+.nav-drawer a:hover{color:var(--rust)}
+.nav-drawer .d-cta{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-style:normal;color:var(--rust);border:1px solid var(--rust);padding:.8rem 2rem;margin-top:.5rem}
+
+/* ── BUTTONS ── */
+.btn{display:inline-block;padding:.8rem 1.6rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:.74rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .25s;cursor:pointer;border:none;-webkit-tap-highlight-color:transparent}
+.btn-dark{background:var(--ink);color:var(--cream)}
+.btn-dark:hover{background:var(--rust);transform:translateY(-2px)}
+.btn-outline{border:1.5px solid var(--ink);color:var(--ink);background:transparent}
+.btn-outline:hover{background:var(--ink);color:var(--cream);transform:translateY(-2px)}
+.btn-light{background:var(--cream);color:var(--ink);display:block;text-align:center;padding:1rem}
+.btn-light:hover{background:var(--rust);color:var(--cream)}
+
+/* ── HERO (mobile base) ── */
+.hero{padding-top:3.8rem;min-height:100svh;display:flex;flex-direction:column}
+.hero-photo{width:100%;aspect-ratio:1/1;overflow:hidden;position:relative;flex-shrink:0}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.hero-photo-overlay{position:absolute;bottom:0;left:0;right:0;height:35%;background:linear-gradient(to top,var(--cream),transparent)}
+.hero-content{padding:1.5rem 1.25rem 3rem;display:flex;flex-direction:column;gap:1.2rem}
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);display:flex;align-items:center;gap:.6rem}
+.hero-eyebrow::before{content:'';display:block;width:1.5rem;height:1px;background:var(--rust)}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,14vw,5.5rem);font-weight:300;line-height:.92;letter-spacing:-.02em}
+.hero-name em{font-style:italic;color:var(--rust);display:block}
+.hero-subtitle{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:var(--warm-gray);line-height:1.65;border-left:2px solid var(--rust-light);padding-left:1rem}
+.hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.3rem}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);padding-top:1.5rem}
+.stat{text-align:center;padding:.4rem}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--rust);line-height:1}
+.stat-l{font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;color:var(--warm-gray);margin-top:.25rem;line-height:1.3}
+
+/* ── DIVIDER ── */
+hr{border:none;border-top:1px solid var(--border)}
+
+/* ── SECTION ── */
+.section{padding:3rem 1.25rem}
+.section-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
+.section-label::before{content:'';display:block;width:1.2rem;height:1px;background:var(--rust)}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,8vw,3.8rem);font-weight:300;line-height:1.05;margin-bottom:1.2rem}
+.section-title em{font-style:italic;color:var(--rust)}
+
+/* ── ABOUT ── */
+.about-p{font-size:.9rem;line-height:1.85;color:#4A4540;margin-bottom:1rem}
+.pillars{display:flex;flex-direction:column;gap:.8rem;border-top:1px solid var(--border);padding-top:1.5rem;margin-top:.5rem}
+.pillar{padding:1rem;background:var(--white);border:1px solid var(--border)}
+.pillar-n{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--rust);letter-spacing:.1em;margin-bottom:.4rem}
+.pillar-t{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;margin-bottom:.3rem}
+.pillar-d{font-size:.8rem;line-height:1.6;color:var(--warm-gray)}
+
+/* ── SKILLS ── */
+.skills-bar{background:var(--ink);padding:2.5rem 1.25rem}
+.skills-bar h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;font-style:italic;color:var(--cream);margin-bottom:1.5rem}
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(255,255,255,.1)}
+.skill-cell{padding:1rem;border-right:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);transition:background .25s}
+.skill-cell:hover{background:rgba(184,74,30,.12)}
+.skill-cell:nth-child(2n){border-right:none}
+.skill-ico{font-size:1rem;margin-bottom:.5rem}
+.skill-name{font-size:.8rem;font-weight:500;color:var(--cream);margin-bottom:.2rem}
+.skill-cat{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(253,251,248,.35)}
+
+/* ── PROJECTS (mobile) ── */
+.projects-intro{font-size:.85rem;line-height:1.75;color:var(--warm-gray);margin-bottom:2rem}
+.project-card{border:1px solid var(--border);margin-bottom:1rem;overflow:hidden;background:var(--white)}
+.project-visual{width:100%;aspect-ratio:16/9;overflow:hidden}
+.project-visual img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s}
+.project-card:hover .project-visual img{transform:scale(1.03)}
+.project-visual-contain{width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;padding:2rem}
+.project-visual-contain img{max-width:100%;max-height:100%;object-fit:contain}
+.essentia-panel{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#F0EDE6 0%,#E8F0E4 55%,#D4E6CC 100%);display:flex;align-items:center;justify-content:center}
+.project-info{padding:1.5rem}
+.project-index{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--rust);margin-bottom:.8rem}
+.project-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;line-height:1.1;margin-bottom:.3rem}
+.project-role{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:1rem}
+.project-challenge{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--warm-gray);line-height:1.6;border-left:2px solid var(--rust-light);padding-left:.8rem;margin-bottom:1rem}
+.project-desc{font-size:.82rem;line-height:1.75;color:#5A5450;margin-bottom:1.2rem}
+.project-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem}
+.tag{padding:.25rem .7rem;background:var(--rust-light);color:var(--rust);font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;font-weight:500}
+.tag.sage{background:#E3EBE2;color:var(--sage)}
+.tag.dark{background:#E5E2DC;color:var(--ink)}
+.project-link{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--cream);font-weight:500;display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--ink);padding:.85rem 1rem;width:100%;text-align:center;transition:background .2s}
+.project-link:hover{background:var(--rust)}
+
+/* ── PROCESS ── */
+.process{background:var(--white);padding:3rem 1.25rem}
+.process-steps{display:flex;flex-direction:column;border:1px solid var(--border);margin-top:1.5rem}
+.step{padding:1.2rem;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.step-header{display:flex;align-items:baseline;gap:.8rem;margin-bottom:.4rem}
+.step-n{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--rust-light);line-height:1}
+.step-t{font-weight:500;font-size:.85rem}
+.step-d{font-size:.78rem;line-height:1.6;color:var(--warm-gray)}
+
+/* ── CONTACT ── */
+.contact{background:var(--ink);padding:3rem 1.25rem}
+.contact h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,10vw,4rem);font-weight:300;line-height:1.1;color:var(--cream);margin-bottom:1rem}
+.contact h2 em{font-style:italic;color:rgba(240,228,220,.5)}
+.contact-intro{font-size:.85rem;line-height:1.8;color:rgba(253,251,248,.5);margin-bottom:2rem}
+.contact-links{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.5rem}
+.contact-link{display:flex;align-items:center;gap:1rem;text-decoration:none;padding:1rem 1.2rem;border:1px solid rgba(255,255,255,.1);transition:all .25s}
+.contact-link:hover{border-color:var(--rust);background:rgba(184,74,30,.08)}
+.contact-link-ico{width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);font-size:.8rem;font-family:'Space Mono',monospace;color:var(--cream)}
+.contact-link-label{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(253,251,248,.35);margin-bottom:.15rem}
+.contact-link-val{font-size:.82rem;color:var(--cream)}
+
+/* ── FOOTER ── */
+footer{background:#100E09;color:rgba(253,251,248,.3);padding:1.5rem 1.25rem;font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.08em;display:flex;flex-direction:column;gap:.5rem;text-align:center}
+footer a{color:rgba(253,251,248,.3);text-decoration:none;transition:color .2s}
+footer a:hover{color:var(--rust)}
+
+/* ── ANIMATIONS ── */
+.fade-up{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* ═══════════════════════════════════════
+   TABLET  ≥ 768px
+═══════════════════════════════════════ */
+@media(min-width:768px){
+  nav{padding:1.1rem 2.5rem}
+  .nav-logo{font-size:.68rem}
+
+  .hero{flex-direction:row;align-items:stretch;min-height:100svh;padding-top:4rem}
+  .hero-photo{width:45%;aspect-ratio:auto;flex-shrink:0}
+  .hero-photo img{height:100%}
+  .hero-photo-overlay{display:none}
+  .hero-content{flex:1;padding:3rem 2.5rem;justify-content:center}
+  .hero-name{font-size:clamp(3.5rem,6vw,5rem)}
+  .hero-stats{grid-template-columns:repeat(3,1fr)}
+  .stat-n{font-size:2.2rem}
+  .stat-l{font-size:.62rem}
+
+  .section{padding:4rem 2.5rem}
+  .section-title{font-size:clamp(2rem,5vw,3rem)}
+
+  .pillars{flex-direction:row;gap:1rem}
+  .pillar{flex:1}
+
+  .skills-bar{padding:3.5rem 2.5rem}
+  .skills-bar h2{font-size:2.2rem}
+  .skills-grid{grid-template-columns:repeat(4,1fr)}
+  .skill-cell:nth-child(2n){border-right:1px solid rgba(255,255,255,.1)}
+  .skill-cell:nth-child(4n){border-right:none}
+
+  .project-card{display:grid;grid-template-columns:1fr 1fr;min-height:400px}
+  .project-card.reverse{direction:rtl}
+  .project-card.reverse>*{direction:ltr}
+  .project-visual{aspect-ratio:auto;height:100%}
+  .project-visual-contain{aspect-ratio:auto;height:100%}
+  .essentia-panel{aspect-ratio:auto;height:100%}
+  .project-info{padding:2.5rem}
+  .project-link{width:auto;display:inline-flex}
+  .project-title{font-size:2rem}
+
+  .process{padding:4rem 2.5rem}
+  .process-steps{flex-direction:row;border:1px solid var(--border)}
+  .step{border-right:1px solid var(--border);border-bottom:none;flex:1}
+  .step:last-child{border-right:none}
+  .step-header{flex-direction:column;gap:.3rem}
+  .step-n{font-size:2.2rem}
+
+  .contact{padding:5rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+  .contact h2{font-size:clamp(2.2rem,4vw,3.5rem)}
+  .contact-intro{margin-bottom:1.5rem}
+  .btn-light{display:inline-block;width:auto}
+
+  footer{flex-direction:row;justify-content:space-between;padding:1.5rem 2.5rem;text-align:left}
+}
+
+/* ═══════════════════════════════════════
+   DESKTOP  ≥ 1024px
+═══════════════════════════════════════ */
+@media(min-width:1024px){
+  nav{padding:1.2rem 4rem}
+  .nav-menu-btn{display:none}
+  .nav-links-desktop{display:flex}
+
+  .hero{padding-top:4.5rem}
+  .hero-photo{width:42%}
+  .hero-content{padding:5rem 4rem 5rem 4rem}
+  .hero-name{font-size:clamp(4.5rem,6.5vw,8rem)}
+  .hero-subtitle{font-size:1.2rem}
+  .stat-n{font-size:2.8rem}
+  .stat-l{font-size:.68rem}
+
+  .section{padding:6rem 5rem}
+  .section-label{font-size:.68rem}
+
+  .about-grid{display:grid;grid-template-columns:200px 1fr}
+  .about-body{padding-left:4rem;border-left:1px solid var(--border)}
+  .about-p{font-size:1rem;max-width:600px}
+  .section-title{font-size:clamp(2rem,3.2vw,3rem)}
+
+  .skills-bar{padding:4.5rem 5rem}
+  .skills-bar h2{font-size:2.8rem}
+  .skill-cell{padding:1.8rem 1.6rem}
+  .skill-name{font-size:.85rem}
+  .skill-cat{font-size:.62rem}
+
+  .projects-section{padding:6rem 5rem}
+  .projects-head{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:end;margin-bottom:4rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border)}
+  .projects-head h2{font-size:clamp(2.5rem,4vw,3.8rem)}
+  .project-card{min-height:520px}
+  .project-info{padding:3.5rem}
+  .project-title{font-size:2.2rem}
+  .project-challenge{font-size:1.05rem}
+  .project-desc{font-size:.9rem}
+  .project-link{font-size:.78rem;border:1.5px solid var(--rust);padding:.6rem 1.4rem;color:var(--rust);background:transparent;justify-content:flex-start}
+  .project-link:hover{background:var(--rust);color:var(--cream)}
+
+  .process{padding:6rem 5rem}
+  .process-grid{display:grid;grid-template-columns:200px 1fr}
+  .process-body{padding-left:4rem;border-left:1px solid var(--border)}
+  .step{padding:2rem 1.5rem}
+  .step-n{font-size:3rem}
+  .step-t{font-size:.85rem}
+
+  .contact{padding:7rem 5rem;gap:5rem}
+  .contact h2{font-size:clamp(2.5rem,4vw,4rem)}
+  .contact-intro{font-size:.95rem}
+
+  footer{padding:2rem 5rem;font-size:.62rem}
+
+  .add-card{border:1.5px dashed var(--border);min-height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;cursor:pointer;margin-top:2px;transition:all .25s;text-decoration:none;background:transparent}
+  .add-card:hover{background:var(--white);border-color:var(--rust)}
+  .add-card .plus{font-size:2rem;color:#C8C0B4}
+  .add-card p{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--warm-gray)}
+  .add-card:hover .plus,.add-card:hover p{color:var(--rust)}
+}
+
+/* ═══════════════════════════════════════
+   WIDE  ≥ 1280px
+═══════════════════════════════════════ */
+@media(min-width:1280px){
+  .hero-photo{width:44%}
+  .hero-content{padding:5rem 4rem 5rem 5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">JA / Portfolio</a>
+  <ul class="nav-links-desktop">
+    <li><a href="#about">Acerca</a></li>
+    <li><a href="#proyectos">Proyectos</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#contacto" class="nav-cta-d">Contacto</a></li>
+  </ul>
+  <button class="nav-menu-btn" id="menuBtn" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-drawer" id="navDrawer">
+  <a href="#about" class="drawer-link">Acerca</a>
+  <a href="#proyectos" class="drawer-link">Proyectos</a>
+  <a href="#proceso" class="drawer-link">Proceso</a>
+  <a href="#contacto" class="drawer-link d-cta">Contacto</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-photo">
+    <img src="https://res.cloudinary.com/dmrrpbukd/image/upload/v1779851983/Foto_portafolio_2026_f6djw7.png" alt="Jessica Avila">
+    <div class="hero-photo-overlay"></div>
+  </div>
+  <div class="hero-content fade-up">
+    <div class="hero-eyebrow">UX/UI Designer &amp; E-commerce Specialist</div>
+    <h1 class="hero-name">Jessica<br><em>Avila.</em></h1>
+    <p class="hero-subtitle">Marketing de formación,<br>UX por vocación<br>y estratega por experiencia.</p>
+    <div class="hero-actions">
+      <a href="#proyectos" class="btn btn-dark">Ver proyectos</a>
+      <a href="https://www.linkedin.com/in/jessica-avila-pineda" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-n">5+</div><div class="stat-l">Años en marketing</div></div>
+      <div class="stat"><div class="stat-n">3</div><div class="stat-l">Proyectos UX/UI</div></div>
+      <div class="stat"><div class="stat-n">360°</div><div class="stat-l">Visión negocio + diseño</div></div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- ── ABOUT ── -->
+<section class="section" id="about">
+  <div class="about-grid">
+    <div class="section-label fade-up">Sobre mí</div>
+    <div class="about-body">
+      <h2 class="section-title fade-up">Donde la estrategia<br><em>encuentra el diseño.</em></h2>
+      <p class="about-p fade-up">Mi carrera comenzó en el mundo del marketing, donde aprendí que detrás de cada clic hay una decisión de negocio y, sobre todo, una persona buscando una solución. Durante más de 5 años lideré estrategias de eCommerce y Marketplace, optimizando canales de venta y mejorando la conversión a través del análisis de datos.</p>
+      <p class="about-p fade-up">Hoy combino ese pensamiento analítico con el diseño UX/UI para construir interfaces que no solo se ven bien, sino que funcionan — tanto para las personas como para los objetivos de negocio.</p>
+      <div class="pillars fade-up">
+        <div class="pillar"><div class="pillar-n">01</div><div class="pillar-t">Visión 360°</div><div class="pillar-d">Entiendo el funnel de ventas y cómo el diseño impacta en cada etapa del negocio.</div></div>
+        <div class="pillar"><div class="pillar-n">02</div><div class="pillar-t">Resolución estratégica</div><div class="pillar-d">Identifico puntos de fricción y los convierto en flujos fluidos con base en datos reales.</div></div>
+        <div class="pillar"><div class="pillar-n">03</div><div class="pillar-t">Empatía rentable</div><div class="pillar-d">Diseño con investigación de usuario, siempre con un ojo en los objetivos de conversión.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<div class="skills-bar">
+  <h2>Herramientas &amp; Competencias</h2>
+  <div class="skills-grid">
+    <div class="skill-cell"><div class="skill-ico">◈</div><div class="skill-name">Figma</div><div class="skill-cat">Diseño UI / Prototipado</div></div>
+    <div class="skill-cell"><div class="skill-ico">◉</div><div class="skill-name">Adobe XD</div><div class="skill-cat">Diseño UI</div></div>
+    <div class="skill-cell"><div class="skill-ico">⬡</div><div class="skill-name">Miro</div><div class="skill-cat">Colaboración / Workshops</div></div>
+    <div class="skill-cell"><div class="skill-ico">◷</div><div class="skill-name">Lean UX</div><div class="skill-cat">Metodología</div></div>
+    <div class="skill-cell"><div class="skill-ico">◎</div><div class="skill-name">UX Research</div><div class="skill-cat">Cualitativo / Cuantitativo</div></div>
+    <div class="skill-cell"><div class="skill-ico">◌</div><div class="skill-name">Design Systems</div><div class="skill-cat">Componentes / Tokens</div></div>
+    <div class="skill-cell"><div class="skill-ico">◈</div><div class="skill-name">Salesforce</div><div class="skill-cat">CRM / E-commerce</div></div>
+    <div class="skill-cell"><div class="skill-ico">◉</div><div class="skill-name">HubSpot</div><div class="skill-cat">Email Marketing ✓ Cert.</div></div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ── PROJECTS ── -->
+<section class="section projects-section" id="proyectos">
+  <div class="projects-head fade-up">
+    <h2 class="section-title" style="margin-bottom:0">Proyectos<br><em>seleccionados.</em></h2>
+    <p class="projects-intro" style="margin-bottom:0">Cada proyecto parte de un problema real de negocio y concluye con soluciones centradas en el usuario que generan resultados medibles.</p>
+  </div>
+
+  <!-- P1 -->
+  <div class="project-card fade-up">
+    <div class="project-visual-contain" style="background:#EEF5FB;">
+      <img src="https://res.cloudinary.com/dmrrpbukd/image/upload/v1776987570/upscalemedia-transformed_bjwp38.png" alt="EduGo! Logo">
+    </div>
+    <div class="project-info">
+      <div class="project-index">Proyecto 01 — Diplomado UX/UI</div>
+      <h3 class="project-title">EduGo!</h3>
+      <div class="project-role">UX Research · UX/UI Design · Lean UX</div>
+      <p class="project-challenge">"¿Cómo ayudar a profesionistas con poco tiempo a invertir en su crecimiento sin fricciones?"</p>
+      <p class="project-desc">MVP de plataforma e-learning con Lean UX. 3 User Personas, Customer Journey Map, Mapa de Empatía y Benchmark competitivo contra UNAM, ITESO, Anáhuac e ITESM.</p>
+      <div class="project-tags">
+        <span class="tag">Lean UX</span><span class="tag">UX Research</span><span class="tag sage">User Personas</span><span class="tag sage">Journey Map</span><span class="tag dark">Figma</span>
+      </div>
+      <a href="https://www.figma.com/board/2yi98CJc46CGfUIi7jXt0l/Proyecto-EduGo?node-id=0-1&t=Dx6pD1XgtmoQVxBs-1" target="_blank" class="project-link">Ver caso de estudio en Figma ↗</a>
+    </div>
+  </div>
+
+  <!-- P2 -->
+  <div class="project-card reverse fade-up">
+    <div class="project-visual">
+      <img src="https://res.cloudinary.com/dmrrpbukd/image/upload/v1776987570/pexels-aitizaz-naqvi-3660550-5477263_hmivwu.jpg" alt="Nescafé MVP">
+    </div>
+    <div class="project-info">
+      <div class="project-index">Proyecto 02 — Diplomado UX/UI</div>
+      <h3 class="project-title">MVP Nescafé</h3>
+      <div class="project-role">UX Strategy · Phygital Design · E-commerce</div>
+      <p class="project-challenge">"¿Cómo aumentar el engagement de Nescafé con Millennials y Gen Z integrando un canal físico-digital?"</p>
+      <p class="project-desc">Proyecto phygital combinando islas físicas Nespresso con mejoras en la app Dolce Gusto. Sistema de puntos, cupones y recetarios. Benchmark vs. Starbucks, Dunkin' y Tim Horton's.</p>
+      <div class="project-tags">
+        <span class="tag">Phygital</span><span class="tag">E-commerce</span><span class="tag sage">Lean UX</span><span class="tag sage">Empathy Map</span><span class="tag dark">Figma</span>
+      </div>
+      <a href="https://www.figma.com/board/xoUAG9wUBPACDyzuewVsQF/Nescafe?t=Dx6pD1XgtmoQVxBs-1" target="_blank" class="project-link">Ver caso de estudio en Figma ↗</a>
+    </div>
+  </div>
+
+  <!-- P3 -->
+  <div class="project-card fade-up">
+    <div class="essentia-panel">
+      <svg width="280" height="175" viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(140,36)">
+          <ellipse cx="-7" cy="0" rx="20" ry="27" fill="#4A6741" transform="rotate(-25)" opacity=".9"/>
+          <ellipse cx="7" cy="0" rx="20" ry="27" fill="#6A9960" transform="rotate(25)" opacity=".65"/>
+          <line x1="0" y1="28" x2="0" y2="-13" stroke="#8B6343" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <text x="140" y="94" font-family="Lato,sans-serif" font-weight="900" font-size="38" fill="#3D5A35" text-anchor="middle" letter-spacing="-0.5">Essentia</text>
+        <text x="140" y="122" font-family="Lato,sans-serif" font-weight="300" font-size="22" fill="#8B6343" text-anchor="middle" letter-spacing="9">VERDE</text>
+        <line x1="50" y1="133" x2="230" y2="133" stroke="#C8B89A" stroke-width="0.8" opacity=".6"/>
+        <text x="140" y="150" font-family="Lato,sans-serif" font-weight="300" font-size="9" fill="#7A8F76" text-anchor="middle" letter-spacing="3.5">CAFETERÍA · DISEÑO CONSCIENTE</text>
+      </svg>
+    </div>
+    <div class="project-info">
+      <div class="project-index">Proyecto 03 — Diplomado UX/UI</div>
+      <h3 class="project-title">Essentia Verde</h3>
+      <div class="project-role">Design System · UI Design · Branding Digital</div>
+      <p class="project-challenge">"¿Cómo crear un sistema de diseño que refleje la identidad natural y premium de una cafetería?"</p>
+      <p class="project-desc">Sistema de diseño completo: paleta con tokens cromáticos, escala tipográfica Lato Desktop/Mobile y biblioteca de componentes para una cafetería conceptual premium.</p>
+      <div class="project-tags">
+        <span class="tag sage">Design System</span><span class="tag sage">UI Design</span><span class="tag">Tokens</span><span class="tag dark">Figma</span>
+      </div>
+      <a href="https://www.figma.com/design/WsFFgynw7a6jzhXpW7Bq0h/Design-System?t=Dx6pD1XgtmoQVxBs-1" target="_blank" class="project-link">Ver caso de estudio en Figma ↗</a>
+    </div>
+  </div>
+
+  <a href="#" class="add-card" onclick="return false;">
+    <span class="plus">+</span>
+    <p>Agregar nuevo proyecto</p>
+  </a>
+</section>
+
+<hr>
+
+<!-- ── PROCESS ── -->
+<section class="process" id="proceso">
+  <div class="process-grid">
+    <div class="section-label fade-up">Mi proceso</div>
+    <div class="process-body">
+      <h2 class="section-title fade-up">Cómo <em>pienso</em><br>el diseño</h2>
+      <p class="about-p fade-up">Investigación, definición, ideación, prototipado y validación — siempre con foco en el negocio y la persona al centro.</p>
+      <div class="process-steps fade-up">
+        <div class="step"><div class="step-header"><div class="step-n">01</div><div class="step-t">Descubrir</div></div><div class="step-d">Investigación cualitativa y cuantitativa. Entrevistas, encuestas, benchmarking.</div></div>
+        <div class="step"><div class="step-header"><div class="step-n">02</div><div class="step-t">Definir</div></div><div class="step-d">User Personas, Journey Maps, Mapa de Empatía, objetivos SMART.</div></div>
+        <div class="step"><div class="step-header"><div class="step-n">03</div><div class="step-t">Idear</div></div><div class="step-d">Lluvia de ideas, Modelo Canvas, propuesta de valor, arquitectura de información.</div></div>
+        <div class="step"><div class="step-header"><div class="step-n">04</div><div class="step-t">Prototipar</div></div><div class="step-d">Wireframes, flujos de usuario y prototipo navegable en Figma a alta fidelidad.</div></div>
+        <div class="step"><div class="step-header"><div class="step-n">05</div><div class="step-t">Validar</div></div><div class="step-d">Pruebas de usabilidad, iteración continua, métricas de conversión y NPS.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section class="contact" id="contacto">
+  <div class="fade-up">
+    <h2>Diseñemos algo<br><em>que funcione.</em></h2>
+    <p class="contact-intro">Busco oportunidades donde el diseño y la estrategia de negocio se encuentren. Si tienes un reto que resolver, hablemos.</p>
+    <a href="mailto:jessvap@gmail.com" class="btn btn-light" style="display:inline-block;width:auto">Enviar mensaje ↗</a>
+  </div>
+  <div class="contact-links fade-up">
+    <a href="https://www.linkedin.com/in/jessica-avila-pineda" target="_blank" class="contact-link">
+      <div class="contact-link-ico">in</div>
+      <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-val">jessica-avila-pineda</div></div>
+    </a>
+    <a href="mailto:jessvap@gmail.com" class="contact-link">
+      <div class="contact-link-ico">@</div>
+      <div><div class="contact-link-label">Email</div><div class="contact-link-val">jessvap@gmail.com</div></div>
+    </a>
+    <div class="contact-link">
+      <div class="contact-link-ico">📍</div>
+      <div><div class="contact-link-label">Ubicación</div><div class="contact-link-val">Jalisco, México — remota</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Jessica Avila — UX/UI Designer &amp; E-commerce Specialist</span>
+  <span>Jalisco, México &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/jessica-avila-pineda" target="_blank">LinkedIn</a></span>
+</footer>
+
+<script>
+// Hamburger menu
+const menuBtn = document.getElementById('menuBtn');
+const navDrawer = document.getElementById('navDrawer');
+menuBtn.addEventListener('click', () => {
+  const open = navDrawer.classList.toggle('open');
+  menuBtn.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+navDrawer.querySelectorAll('.drawer-link').forEach(l => {
+  l.addEventListener('click', () => {
+    navDrawer.classList.remove('open');
+    menuBtn.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+// Fade-up on scroll
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 70);
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
